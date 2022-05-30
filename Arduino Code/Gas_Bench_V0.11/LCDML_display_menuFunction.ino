@@ -206,10 +206,11 @@ void mFunc_p2(uint8_t param)
 }
 
 
-// *********************************************************************
+/*********************************************************************
+selGas
 //uint8_t g_button_value = 0; // button value counter (global variable)
+*********************************************************************/
 void selGas(uint8_t param)
-// *********************************************************************
 {
   if(LCDML.FUNC_setup())          // ****** SETUP *********
   {
@@ -219,16 +220,16 @@ void selGas(uint8_t param)
     switch(param)
       {
       case 1:
-        gas = gasC1;
+        gas = canal1.gas;
       break;
       case 2:
-        gas = gasC2;
+        gas = canal2.gas;
       break;
       case 3:
-        gas = gasC3;
+        gas = canal3.gas;
       break;
       case 4:
-        gas = gasC4;
+        gas = canal4.gas;
       break;
       default:
           // do nothing
@@ -250,7 +251,7 @@ void selGas(uint8_t param)
     if (LCDML.BT_checkUp()) // check if button left is pressed
     {
       LCDML.BT_resetUp(); // reset the left button
-      if (gasBak < 2)
+      if (gasBak < 3)
       gasBak++;
       else
         gasBak = 0;
@@ -261,7 +262,7 @@ void selGas(uint8_t param)
       if (gasBak > 0)
         gasBak = gasBak - 1;
       else
-        gasBak = 2;
+        gasBak = 3;
     }
     lcd.setCursor(7, 1); // set cursor
     switch(gasBak)
@@ -277,6 +278,9 @@ void selGas(uint8_t param)
         case 2:
             lcd.print("H2S"); // print change content        
         break;
+        case 3:
+            lcd.print("---"); // print change content        
+        break;
         default:
             // do nothing
         break;
@@ -287,26 +291,35 @@ void selGas(uint8_t param)
       switch(param)
         {
         case 1:
-          gasC1 = gasBak;
+          canal1.gas = gasBak;
+//          EEPROM.update(1, gasBak);
         break;
         case 2:
-          gasC2 = gasBak;
+          canal2.gas = gasBak;
+//          EEPROM.update(5, gasBak);
         break;
         case 3:
-          gasC3 = gasBak;
+          canal3.gas = gasBak;
+//          EEPROM.update(9, gasBak);
         break;
         case 4:
-          gasC4 = gasBak;
+          canal4.gas = gasBak;
+//          EEPROM.update(13, gasBak);
         break;
         default:
             // do nothing
         break;
         }      
+/*      EEPROM_writeAnything(1, canal1);
+      EEPROM_writeAnything(6, canal2);
+      EEPROM_writeAnything(11, canal3);
+      EEPROM_writeAnything(16, canal4);
+*/
       LCDML.FUNC_goBackToMenu();      // leave this function
-      Serial.println(gasC1);
-      Serial.println(gasC2);
-      Serial.println(gasC3);
-      Serial.println(gasC4);
+      Serial.println(canal1.gas);
+      Serial.println(canal2.gas);
+      Serial.println(canal3.gas);
+      Serial.println(canal4.gas);
       Serial.println();
     }    
   }
@@ -316,10 +329,11 @@ void selGas(uint8_t param)
   }
 }
 
-// *********************************************************************
+/*********************************************************************
+selRan
 //uint8_t g_button_value = 0; // button value counter (global variable)
+ *********************************************************************/
 void selRan(uint8_t param)
-// *********************************************************************
 {
   int rango = 0;
   if(LCDML.FUNC_setup())          // ****** SETUP *********
@@ -331,16 +345,16 @@ void selRan(uint8_t param)
     switch(param)
       {
       case 1:
-        ran = ranC1;
+        ran = canal1.ran;
       break;
       case 2:
-        ran = ranC2;
+        ran = canal2.ran;
       break;
       case 3:
-        ran = ranC3;
+        ran = canal3.ran;
       break;
       case 4:
-        ran = ranC4;
+        ran = canal4.ran;
       break;
       default:
           // do nothing
@@ -416,30 +430,43 @@ void selRan(uint8_t param)
       switch(param)
         {
         case 1:
-          ranC1 = ranBak;
-          rangoC1 = rango;
-        break;
+          canal1.ran = ranBak;
+          canal1.rango = rango;
+//          EEPROM.update(2, ranBak);
+//          EEPROM.update(3, rango);
+          break;
         case 2:
-          ranC2 = ranBak;
-          rangoC2 = rango;
+          canal2.ran = ranBak;
+          canal2.rango = rango;
+//          EEPROM.update(6, ranBak);
+//          EEPROM.update(7, rango);          
         break;
         case 3:
-          ranC3 = ranBak;
-          rangoC3 = rango;
+          canal3.ran = ranBak;
+          canal3.rango = rango;
+//          EEPROM.update(10, ranBak);
+//          EEPROM.update(11, rango);         
         break;
         case 4:
-          ranC4 = ranBak;
-          rangoC4 = rango;
+          canal4.ran = ranBak;
+          canal4.rango = rango;
+//          EEPROM.update(14, ranBak);
+//          EEPROM.update(15, rango);        
         break;
         default:
             // do nothing
         break;
         }      
+/*      EEPROM_writeAnything(1, canal1);
+      EEPROM_writeAnything(6, canal2);
+      EEPROM_writeAnything(11, canal3);
+      EEPROM_writeAnything(16, canal4);
+*/
       LCDML.FUNC_goBackToMenu();      // leave this function
-      Serial.println(rangoC1);
-      Serial.println(rangoC2);
-      Serial.println(rangoC3);
-      Serial.println(rangoC4);
+      Serial.println(canal1.rango);
+      Serial.println(canal2.rango);
+      Serial.println(canal3.rango);
+      Serial.println(canal4.rango);
       Serial.println();
     }    
   }
@@ -449,10 +476,12 @@ void selRan(uint8_t param)
   }
 }
 
-// *********************************************************************
+/*********************************************************************
+selLoop
 //uint8_t g_button_value = 0; // button value counter (global variable)
-void selLoop(uint8_t param)
-// *********************************************************************
+ *********************************************************************/
+
+ void selLoop(uint8_t param)
 {
 
   if(LCDML.FUNC_setup())          // ****** SETUP *********
@@ -464,16 +493,16 @@ void selLoop(uint8_t param)
     switch(param)
       {
       case 1:
-        loop = loopC1;
+        loop = canal1.loop;
       break;
       case 2:
-        loop = loopC2;
+        loop = canal2.loop;
       break;
       case 3:
-        loop = loopC3;
+        loop = canal3.loop;
       break;
       case 4:
-        loop = loopC4;
+        loop = canal4.loop;
       break;
       default:
           // do nothing
@@ -512,39 +541,50 @@ void selLoop(uint8_t param)
       switch(param)
         {
         case 1:
-          loopC1 = loopBak;
+          canal1.loop = loopBak;
+//          EEPROM.update(5, loopBak);
         break;
         case 2:
-          loopC2 = loopBak;
+          canal2.loop = loopBak;
+//          EEPROM.update(9, loopBak);
         break;
         case 3:
-          loopC3 = loopBak;
+          canal3.loop = loopBak;
+//          EEPROM.update(13, loopBak);
         break;
         case 4:
-          loopC4 = loopBak;
+          canal4.loop = loopBak;
+//          EEPROM.update(17, loopBak);
         break;
         default:
             // do nothing
         break;
         }      
+/*      EEPROM_writeAnything(1, canal1);
+      EEPROM_writeAnything(6, canal2);
+      EEPROM_writeAnything(11, canal3);
+      EEPROM_writeAnything(16, canal4);
+*/
       LCDML.FUNC_goBackToMenu();      // leave this function
-      Serial.println(loopC1);
-      Serial.println(loopC2);
-      Serial.println(loopC3);
-      Serial.println(loopC4);
+      Serial.println(canal1.loop);
+      Serial.println(canal2.loop);
+      Serial.println(canal3.loop);
+      Serial.println(canal4.loop);
       Serial.println();
     }    
   }
   if(LCDML.FUNC_close())     // ****** STABLE END *********
   {
+    
     // you can here reset some global vars or do nothing
   }
 }
 
-// *********************************************************************
+/*********************************************************************
+Medicion:
+*********************************************************************/
 unsigned long g_timer_2 = 0;    // timer variable (global variable)
 void medicion(uint8_t param)
-// *********************************************************************
 {
   if(LCDML.FUNC_setup())          // ****** SETUP *********
   {
@@ -557,142 +597,229 @@ void medicion(uint8_t param)
   }
 
   if(LCDML.FUNC_loop())
+
     
     if(LCDML.TIMER_ms(g_timer_2, 1000)) 
     {
+    impresion();//imprimo por puerto serie info gral
+  //******************************************************************************
+//C1
+  adcRead = (analogRead(A4));
+  cntAdcC1 = adcRead;
+  if(canal1.loop == false)
+    {
+      //4-20mA
+      adcC1 = (canal1.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal1.rango/4;
+    }
+  else
+    {
+      //0-20mA
+      adcC1 = (adcRead * cteAdc) * canal1.rango / (.02 * 204.7);
+    }
+  if(adcC1 < 0)
+    adcC1 = 0;
+  
 
-      // update LCD content
+//C2
+  adcRead = (analogRead(A5));
+  cntAdcC2 = adcRead;  
+  if(canal2.loop == false)
+    {
+      //4-20mA
+      adcC2 = (canal2.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal2.rango/4;
+    }
+  else
+    {
+      //0-20mA
+      adcC2 = (adcRead * cteAdc) * canal2.rango / (.02 * 204.7);
+    }
+  if(adcC2 < 0)
+    adcC2 = 0;
+//C3
+  adcRead = (analogRead(A6));
+  cntAdcC3 = adcRead;  
+  if(canal3.loop == false)
+    {
+      //4-20mA
+      adcC3 = (canal3.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal3.rango/4;
+    }
+  else
+    {
+      //0-20mA
+      adcC3 = (adcRead * cteAdc) * canal3.rango / (.02 * 204.7);
+    }
+  if(adcC3 < 0)
+    adcC3 = 0;
+//C4
+  
+  adcRead = (analogRead(A7));
+  cntAdcC4 = adcRead;
+  if(canal4.loop == false)
+    {
+      //4-20mA
+      adcC4 = (canal4.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal4.rango/4;
+    }
+  else
+    {
+      //0-20mA
+      adcC4 = (adcRead * cteAdc) * canal4.rango / (.02 * 204.7);
+    }
+  if(adcC4 < 0)
+    adcC4 = 0;
+ 
+  //******************************************************************************
       lcd.setCursor(0, 0); // set cursor
       lcd.print(F("1          :     ppm")); // print change content
       lcd.setCursor(2, 0); // set cursor
-      switch(gasC1)
+      switch(canal1.gas)
           {
           case 0:
-              lcd.print("CO2"); // print change content        
+              lcd.print("CO2"); // print change content 
           break;
-
           case 1:
               lcd.print("SO2"); // print change content        
           break;
-
           case 2:
               lcd.print("H2S"); // print change content        
           break;
-          default:
-              // do nothing
-          break;
-          }      
-      switch(ranC1)
-          {
-          case 0:
-              lcd.setCursor(8, 0); // set cursor
-              lcd.print("[5]"); // print change content
-          break;
-
-          case 1:
-              lcd.setCursor(7, 0); // set cursor
-              lcd.print("[50]"); // print change content        
-          break;
-
-          case 2:
-              lcd.setCursor(6, 0); // set cursor
-              lcd.print("[200]"); // print change content        
-          break;
           case 3:
-              lcd.setCursor(7, 0); // set cursor
-              lcd.print("[2k]"); // print change content        
-          break;
-          case 4:
-              lcd.setCursor(7, 0); // set cursor
-              lcd.print("[5k]"); // print change content        
-          break;
-          case 5:
-              lcd.setCursor(6, 0); // set cursor
-              lcd.print("[10k]"); // print change content        
+              lcd.print("---"); // print change content        
           break;
           default:
               // do nothing
           break;
           }      
-          if(adcC1 < 1000)
-      {
-
-        lcd.setCursor(12, 0); // set cursor
-        lcd.print(adcC1,1); // print change content
-      }
+      if(canal1.gas == 3)
+        {
+          lcd.setCursor(6, 0); // set cursor
+          lcd.print("[---]"); // print change content        
+          lcd.setCursor(12, 0); // set cursor
+          lcd.print("---- "); // print change content        
+        }
       else
-      {
-        lcd.setCursor(12, 0); // set cursor
-        lcd.print(adcC1,0); // print change content
-      }
-      
+        {
+        switch(canal1.ran)
+            {
+            case 0:
+                lcd.setCursor(8, 0); // set cursor
+                lcd.print("[5]"); // print change content
+            break;
+
+            case 1:
+                lcd.setCursor(7, 0); // set cursor
+                lcd.print("[50]"); // print change content        
+            break;
+
+            case 2:
+                lcd.setCursor(6, 0); // set cursor
+                lcd.print("[200]"); // print change content        
+            break;
+            case 3:
+                lcd.setCursor(7, 0); // set cursor
+                lcd.print("[2k]"); // print change content        
+            break;
+            case 4:
+                lcd.setCursor(7, 0); // set cursor
+                lcd.print("[5k]"); // print change content        
+            break;
+            case 5:
+                lcd.setCursor(6, 0); // set cursor
+                lcd.print("[10k]"); // print change content        
+            break;
+            default:
+                // do nothing
+            break;
+            }
+        if(adcC1 < 1000)
+          {
+          lcd.setCursor(12, 0); // set cursor
+          lcd.print(adcC1,1); // print change content
+          }
+        else
+          {
+          lcd.setCursor(12, 0); // set cursor
+          lcd.print(adcC1,0); // print change content
+          }
+        }
+//
       lcd.setCursor(0, 1); // set cursor
       lcd.print(F("2          :     ppm")); // print change content
       lcd.setCursor(2, 1); // set cursor
-      switch(gasC2)
+      switch(canal2.gas)
           {
           case 0:
               lcd.print("CO2"); // print change content        
           break;
-
           case 1:
               lcd.print("SO2"); // print change content        
           break;
-
           case 2:
               lcd.print("H2S"); // print change content        
           break;
-          default:
-              // do nothing
-          break;
-          }      
-      switch(ranC2)
-          {
-          case 0:
-              lcd.setCursor(8, 1); // set cursor
-              lcd.print("[5]"); // print change content
-          break;
-
-          case 1:
-              lcd.setCursor(7, 1); // set cursor
-              lcd.print("[50]"); // print change content        
-          break;
-
-          case 2:
-              lcd.setCursor(6, 1); // set cursor
-              lcd.print("[200]"); // print change content        
-          break;
           case 3:
-              lcd.setCursor(7, 1); // set cursor
-              lcd.print("[2k]"); // print change content        
-          break;
-          case 4:
-              lcd.setCursor(7, 1); // set cursor
-              lcd.print("[5k]"); // print change content        
-          break;
-          case 5:
-              lcd.setCursor(6, 1); // set cursor
-              lcd.print("[10k]"); // print change content        
+              lcd.print("---"); // print change content        
           break;
           default:
               // do nothing
           break;
-          }      
-      if(adcC2 < 1000)
-      {
-        lcd.setCursor(12, 1); // set cursor
-        lcd.print(adcC2,1); // print change content
-      }
+          }
+      if(canal2.gas == 3)
+        {
+          lcd.setCursor(6, 1); // set cursor
+          lcd.print("[---]"); // print change content        
+          lcd.setCursor(12, 1); // set cursor
+          lcd.print("---- "); // print change content        
+        }
       else
-      {
-        lcd.setCursor(12, 1); // set cursor
-        lcd.print(adcC2,0); // print change content
-      }
-      
+        {
+        switch(canal2.ran)
+            {
+            case 0:
+                lcd.setCursor(8, 1); // set cursor
+                lcd.print("[5]"); // print change content
+            break;
+
+            case 1:
+                lcd.setCursor(7, 1); // set cursor
+                lcd.print("[50]"); // print change content        
+            break;
+
+            case 2:
+                lcd.setCursor(6, 1); // set cursor
+                lcd.print("[200]"); // print change content        
+            break;
+            case 3:
+                lcd.setCursor(7, 1); // set cursor
+                lcd.print("[2k]"); // print change content        
+            break;
+            case 4:
+                lcd.setCursor(7, 1); // set cursor
+                lcd.print("[5k]"); // print change content        
+            break;
+            case 5:
+                lcd.setCursor(6, 1); // set cursor
+                lcd.print("[10k]"); // print change content        
+            break;
+            default:
+                // do nothing
+            break;
+            }      
+        if(adcC2 < 1000)
+          {
+          lcd.setCursor(12, 1); // set cursor
+          lcd.print(adcC2,1); // print change content
+          }
+        else
+          {
+          lcd.setCursor(12, 1); // set cursor
+          lcd.print(adcC2,0); // print change content
+          }
+        }
+//
       lcd.setCursor(0, 2); // set cursor
       lcd.print(F("3          :     ppm")); // print change content
       lcd.setCursor(2, 2); // set cursor
-      switch(gasC3)
+      switch(canal3.gas)
           {
           case 0:
               lcd.print("CO2"); // print change content        
@@ -705,125 +832,353 @@ void medicion(uint8_t param)
           case 2:
               lcd.print("H2S"); // print change content        
           break;
-          default:
-              // do nothing
-          break;
-          }      
-      switch(ranC3)
-          {
-          case 0:
-              lcd.setCursor(8, 2); // set cursor
-              lcd.print("[5]"); // print change content
-          break;
-
-          case 1:
-              lcd.setCursor(7, 2); // set cursor
-              lcd.print("[50]"); // print change content        
-          break;
-
-          case 2:
-              lcd.setCursor(6, 2); // set cursor
-              lcd.print("[200]"); // print change content        
-          break;
           case 3:
-              lcd.setCursor(7, 2); // set cursor
-              lcd.print("[2k]"); // print change content        
-          break;
-          case 4:
-              lcd.setCursor(7, 2); // set cursor
-              lcd.print("[5k]"); // print change content        
-          break;
-          case 5:
-              lcd.setCursor(6, 2); // set cursor
-              lcd.print("[10k]"); // print change content        
+              lcd.print("---"); // print change content        
           break;
           default:
               // do nothing
           break;
           }      
-      if(adcC3 < 1000)
-      {
-        lcd.setCursor(12, 2); // set cursor
-        lcd.print(adcC3,1); // print change content
-      }
+      if(canal3.gas == 3)
+        {
+          lcd.setCursor(6, 2); // set cursor
+          lcd.print("[---]"); // print change content        
+          lcd.setCursor(12, 2); // set cursor
+          lcd.print("---- "); // print change content        
+        }
       else
-      {
-        lcd.setCursor(12, 2); // set cursor
-        lcd.print(adcC3,0); // print change content
-      }
-      
+        {
+        switch(canal3.ran)
+            {
+            case 0:
+                lcd.setCursor(8, 2); // set cursor
+                lcd.print("[5]"); // print change content
+            break;
+
+            case 1:
+                lcd.setCursor(7, 2); // set cursor
+                lcd.print("[50]"); // print change content        
+            break;
+
+            case 2:
+                lcd.setCursor(6, 2); // set cursor
+                lcd.print("[200]"); // print change content        
+            break;
+            case 3:
+                lcd.setCursor(7, 2); // set cursor
+                lcd.print("[2k]"); // print change content        
+            break;
+            case 4:
+                lcd.setCursor(7, 2); // set cursor
+                lcd.print("[5k]"); // print change content        
+            break;
+            case 5:
+                lcd.setCursor(6, 2); // set cursor
+                lcd.print("[10k]"); // print change content        
+            break;
+            default:
+                // do nothing
+            break;
+            }
+        if(adcC3 < 1000)
+          {
+          lcd.setCursor(12, 2); // set cursor
+          lcd.print(adcC3,1); // print change content
+          }
+        else
+          {
+          lcd.setCursor(12, 2); // set cursor
+          lcd.print(adcC3,0); // print change content
+          }
+        }
+//
       lcd.setCursor(0, 3); // set cursor
       lcd.print(F("4          :     ppm")); // print change content
       lcd.setCursor(2, 3); // set cursor
-      switch(gasC4)
+      switch(canal4.gas)
           {
           case 0:
               lcd.print("CO2"); // print change content        
           break;
-
           case 1:
               lcd.print("SO2"); // print change content        
           break;
-
           case 2:
               lcd.print("H2S"); // print change content        
           break;
-          default:
-              // do nothing
-          break;
-          }      
-      switch(ranC4)
-          {
-          case 0:
-              lcd.setCursor(8, 3); // set cursor
-              lcd.print("[5]"); // print change content
-          break;
-
-          case 1:
-              lcd.setCursor(7, 3); // set cursor
-              lcd.print("[50]"); // print change content        
-          break;
-
-          case 2:
-              lcd.setCursor(6, 3); // set cursor
-              lcd.print("[200]"); // print change content        
-          break;
           case 3:
-              lcd.setCursor(7, 3); // set cursor
-              lcd.print("[2k]"); // print change content        
-          break;
-          case 4:
-              lcd.setCursor(7, 3); // set cursor
-              lcd.print("[5k]"); // print change content        
-          break;
-          case 5:
-              lcd.setCursor(6, 3); // set cursor
-              lcd.print("[10k]"); // print change content        
+              lcd.print("---"); // print change content        
           break;
           default:
               // do nothing
           break;
           }      
-      if(adcC4 < 1000)
-      {
-        lcd.setCursor(12, 3); // set cursor
-        lcd.print(adcC4,1); // print change content
-      }
+      if(canal4.gas == 3)
+        {
+          lcd.setCursor(6, 3); // set cursor
+          lcd.print("[---]"); // print change content        
+          lcd.setCursor(12, 3); // set cursor
+          lcd.print("---- "); // print change content        
+        }
       else
-      {
-        lcd.setCursor(12, 3); // set cursor
-        lcd.print(adcC4,0); // print change content
-      }
-      
+        {
+        switch(canal4.ran)
+            {
+            case 0:
+                lcd.setCursor(8, 3); // set cursor
+                lcd.print("[5]"); // print change content
+            break;
 
-    }
+            case 1:
+                lcd.setCursor(7, 3); // set cursor
+                lcd.print("[50]"); // print change content        
+            break;
 
-
+            case 2:
+                lcd.setCursor(6, 3); // set cursor
+                lcd.print("[200]"); // print change content        
+            break;
+            case 3:
+                lcd.setCursor(7, 3); // set cursor
+                lcd.print("[2k]"); // print change content        
+            break;
+            case 4:
+                lcd.setCursor(7, 3); // set cursor
+                lcd.print("[5k]"); // print change content        
+            break;
+            case 5:
+                lcd.setCursor(6, 3); // set cursor
+                lcd.print("[10k]"); // print change content        
+            break;
+            default:
+                // do nothing
+            break;
+            }      
+        if(adcC4 < 1000)
+          {
+          lcd.setCursor(12, 3); // set cursor
+          lcd.print(adcC4,1); // print change content
+          }
+        else
+          {
+          lcd.setCursor(12, 3); // set cursor
+          lcd.print(adcC4,0); // print change content
+          }
+        }
   if(LCDML.FUNC_close())
   {
     // The screensaver go to the root menu
     LCDML.MENU_goRoot();
   }
+}
+}
+
+/*********************************************************************
+impresion
+*********************************************************************/
+void impresion()
+{
+        switch(canal1.gas)
+          {
+          case 0:
+              nombreGasC1= "CO2";            
+          break;
+
+          case 1:
+              nombreGasC1= "SO2";
+          break;
+
+          case 2:
+              nombreGasC1= "H2S";
+          break;
+          case 3:
+              nombreGasC1= "---";
+          break;
+          default:
+              // do nothing
+          break;
+          }
+          
+        switch(canal2.gas)
+          {
+          case 0:
+              nombreGasC2= "CO2";            
+          break;
+
+          case 1:
+              nombreGasC2= "SO2";
+          break;
+
+          case 2:
+              nombreGasC2= "H2S";
+          break;
+          case 3:
+              nombreGasC2= "---";
+          break;
+          default:
+              // do nothing
+          break;
+          }
+
+        switch(canal3.gas)
+          {
+          case 0:
+              nombreGasC3= "CO2";            
+          break;
+
+          case 1:
+              nombreGasC3= "SO2";
+          break;
+
+          case 2:
+              nombreGasC3= "H2S";
+          break;
+          case 3:
+              nombreGasC3= "---";
+          break;
+          default:
+              // do nothing
+          break;
+          }
+        switch(canal4.gas)
+          {
+          case 0:
+              nombreGasC4= "CO2";            
+          break;
+
+          case 1:
+              nombreGasC4= "SO2";
+          break;
+
+          case 2:
+              nombreGasC4= "H2S";
+          break;
+          case 3:
+              nombreGasC4= "---";
+          break;
+          default:
+              // do nothing
+          break;
+          }
+// CANAL 1
+  Serial.print("CANAL 1:");
+  Serial.print(" Gas C1: ");
+  Serial.print(nombreGasC1);
+  Serial.print(" / Rango Max C1[ppm]: ");
+  if(nombreGasC1 == "---")
+    Serial.print("---");
+  else
+    Serial.print(canal1.rango);
+  Serial.print(" / C1[ppm]: ");
+  if(nombreGasC1 == "---")
+    Serial.print("---- ");
+  else
+    Serial.print(adcC1);
+  Serial.print(" / C1[cts]: ");
+  if(nombreGasC1 == "---")
+    Serial.print("----");
+  else
+    Serial.print(cntAdcC1,1);
+  Serial.println();      
+
+// CANAL 2  
+  Serial.print("CANAL 2:");
+  Serial.print(" Gas C2: ");
+  Serial.print(nombreGasC2);  
+  Serial.print(" / Rango Max C2[ppm]: ");
+  if(nombreGasC2 == "---")
+    Serial.print("---");
+  else
+    Serial.print(canal2.rango);
+  Serial.print(" / C2[ppm]: ");
+  if(nombreGasC2 == "---")
+    Serial.print("---- ");
+  else
+    Serial.print(adcC2,1);
+  Serial.print(" / C2[cts]: ");
+  if(nombreGasC2 == "---")
+    Serial.print("----");
+  else
+    Serial.print(cntAdcC2);
+  Serial.println();
+// CANAL 3  
+
+  Serial.print("CANAL 3:");
+  Serial.print(" Gas C3: ");
+  Serial.print(nombreGasC3);
+  Serial.print(" / Rango Max C3[ppm]: ");
+  if(nombreGasC3 == "---")
+    Serial.print("---");
+  else
+    Serial.print(canal3.rango);
+  Serial.print(" / C3[ppm]: ");
+  if(nombreGasC3 == "---")
+    Serial.print("---- ");
+  else
+    Serial.print(adcC3);
+  Serial.print(" / C3[cts]: ");
+  if(nombreGasC3 == "---")
+    Serial.print("----");
+  else
+    Serial.print(cntAdcC3,1);
+  Serial.println();  
+// CANAL 4    
+  Serial.print("CANAL 4:");
+  Serial.print(" Gas C1: ");
+  Serial.print(nombreGasC4);
+  Serial.print(" / Rango Max C4[ppm]: ");
+  if(nombreGasC4 == "---")
+    Serial.print("---");
+  else
+    Serial.print(canal4.rango);
+  Serial.print(" / C4[ppm]: ");
+  if(nombreGasC4 == "---")
+    Serial.print("---- ");
+  else
+    Serial.print(adcC4);          
+  Serial.print(" / C4[cts]: ");
+  if(nombreGasC4 == "---")
+    Serial.println("----");
+  else
+    Serial.println(cntAdcC4,1);
+  Serial.println("-------------------------------------------------------------------- ");  
+}
+/*********************************************************************
+guardar
+*********************************************************************/
+ void guardar(uint8_t param)
+{
+
+  if(LCDML.FUNC_setup())          // ****** SETUP *********
+  {
+    LCDML_UNUSED(param);
+    lcd.setCursor(0, 0);
+    lcd.print(F("  Guardar cambios?"));
+    lcd.setCursor(0, 2);
+    lcd.print(F(" OK para confirmar"));
+    lcd.setCursor(0, 3);
+    lcd.print(F("  Can para Salir"));        
+  }
+  if(LCDML.FUNC_loop())           // ****** LOOP *********
+    if (LCDML.BT_checkEnter()) // check if button left is pressed
+    {
+      LCDML.BT_resetEnter(); // reset the left button
+      EEPROM_writeAnything(1, canal1);
+      EEPROM_writeAnything(6, canal2);
+      EEPROM_writeAnything(11, canal3);
+      EEPROM_writeAnything(16, canal4);
+      Serial.println("- Cambios guardados en EEPROM");
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print(F(" Cambios Guardados!"));
+      lcd.setCursor(0, 3);
+      lcd.print(F("   Can para Salir"));        
+    }    
+  if(LCDML.FUNC_close())     // ****** STABLE END *********
+  {
+  // you can here reset some global vars or do nothing
+  }
+   
 }
 // *********************************************************************
 void mFunc_screensaver(uint8_t param)
@@ -962,66 +1317,4 @@ void mFunc_para(uint8_t param)
     // you can here reset some global vars or do nothing
   }
 }
-/******************************************************************************
-adcs
-Salidas 4 -20mA:
-adcRead = (MAX/(0.016 * R) * (analogRead(pin) * cteAdc)) - MAX/4
-MAX es el valor máximo en ppm del sensor
-R es la resistencia de carga, 204,7 ohms
-******************************************************************************/
-/*
-void adcs()
-{
-float adcRead;
-TP4(1);
-
-//H2S de DMNT
-dmntCnt = (analogRead(pinDmnt));
-// (# de cuentas * (5V/1023) * divisor resistivo)
-dmnt = dmntCnt * cteAdc * (1 + 1) / 1;
-
-//H2S de 50ppm
-h2sCnt = (analogRead(pinH2S));
-adcRead = (50/(0.016 * 204.7) * (h2sCnt * cteAdc)) - 50/4;
-if(adcRead < 0)
-  h2s = 0;
-else
-  h2s = adcRead;
-
-//SO2 de 200ppm
-so2Cnt = (analogRead(pinSO2));
-adcRead = (200/(0.016 * 204.7) * (so2Cnt * cteAdc)) - 200/4;
-if(adcRead < 0)
-  so2 = 0;
-else
-  so2 = adcRead;
-
-//CO2 de 10.000ppm
-co2Cnt = (analogRead(pinCO2));
-adcRead = (co2Cnt * cteAdc) * 10000 / (.02 * 204.7);
-//adcRead = (510 * cteAdc) * 10000 / (.02 * 204.7);
-if(adcRead < 0)
-  co2 = 0;
-else
-  co2 = adcRead;
-
-// Batería
-batCnt = (analogRead(pinBat));
-// (# de cuentas * (5V/1023) * divisor resistivo) + caída en diodo de entrada
-bat = (batCnt * cteAdc * (120 + 47) / 47) + 0.3;
-
-TP4(0);
-
-Serial.print("\nADCs: ");
-Serial.print(dmnt,1);
-Serial.print(", ");
-Serial.print(h2s,0);
-Serial.print(", ");
-Serial.print(so2,0);
-Serial.print(", ");
-Serial.print(co2,0);
-Serial.print(", ");
-Serial.print(bat,1);
-Serial.println();
-}
-*/
+//EOF

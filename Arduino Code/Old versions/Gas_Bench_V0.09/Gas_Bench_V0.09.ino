@@ -19,26 +19,26 @@
 Comentarios:
 - 
 Mapa de EEPROM:
-- 0 a 15
-0  int gasC1 = 0; // nombre para menú lcd
-1  int ranC1 = 0; // rango sensor expresado en valor entero para menú lcd (0-5)
-2  int rangoC1 = 0; // valor máximo del sensor
-3  boolean loopC1 = false; // false = 4-20mA, true = 0-20mA
+- 1 a 16
+1  int gasC1 = 0; // nombre para menú lcd
+2  int ranC1 = 0; // rango sensor expresado en valor entero para menú lcd (0-5)
+3  int rangoC1 = 0; // valor máximo del sensor
+4  boolean loopC1 = false; // false = 4-20mA, true = 0-20mA
 
-4  int gasC2 = 0; // nombre para menú lcd
-5  int ranC2 = 0; // rango sensor expresado en valor entero para menú lcd (0-5)
-6  int rangoC2 = 0; // valor máximo del sensor
-7  boolean loopC3 = false; // false = 4-20mA, true = 0-20mA
+5  int gasC2 = 0; // nombre para menú lcd
+6  int ranC2 = 0; // rango sensor expresado en valor entero para menú lcd (0-5)
+7  int rangoC2 = 0; // valor máximo del sensor
+8  boolean loopC3 = false; // false = 4-20mA, true = 0-20mA
 
-8  int gasC3 = 0; // nombre para menú lcd
-9  int ranC3 = 0; // rango sensor expresado en valor entero para menú lcd (0-5)
-10  int rangoC3 = 0; // valor máximo del sensor
-11  boolean loopC3 = false; // false = 4-20mA, true = 0-20mA
+9  int gasC3 = 0; // nombre para menú lcd
+10  int ranC3 = 0; // rango sensor expresado en valor entero para menú lcd (0-5)
+11  int rangoC3 = 0; // valor máximo del sensor
+12  boolean loopC3 = false; // false = 4-20mA, true = 0-20mA
 
-12 int gasC4 = 0; // nombre para menú lcd
-13  int ranC4 = 0; // rango sensor expresado en valor entero para menú lcd (0-5)
-14  int rangoC4 = 0; // valor máximo del sensor
-15  boolean loopC4 = false; // false = 4-20mA, true = 0-20mA
+13 int gasC4 = 0; // nombre para menú lcd
+14  int ranC4 = 0; // rango sensor expresado en valor entero para menú lcd (0-5)
+15  int rangoC4 = 0; // valor máximo del sensor
+16  boolean loopC4 = false; // false = 4-20mA, true = 0-20mA
 
 */
 
@@ -74,44 +74,55 @@ Mapa de EEPROM:
   boolean led = false;
 
   int temp = 0;
-  int gasBak = 0;
-  int ranBak = 0;
+  byte gasBak = 0;
+  byte ranBak = 0;
   boolean loopBak = false;
   
   float adcRead;
   float cteAdc = 4.096 / 1023;
 
+  struct canalEeprom
+  {
+    byte gas;
+    byte ran;
+    int rango;
+    boolean loop;
+  };
 
-  int gasC1 = 0; // nombre para menú lcd
+  canalEeprom canal1;
+//  byte gasC1 = 0; // nombre para menú lcd
   String nombreGasC1 = " ";
-  int ranC1 = 0; // rango sensor expresado en valor entero para menú lcd (0-5)
-  int rangoC1 = 0; // valor máximo del sensor (5 a 10k)
-  boolean loopC1 = false; // false = 4-20mA, true = 0-20mA
+//  byte ranC1 = 0; // rango sensor expresado en valor entero para menú lcd (0-5)
+//  int rangoC1 = 0; // valor máximo del sensor (5 a 10k)
+//  boolean loopC1 = false; // false = 4-20mA, true = 0-20mA
   float adcC1 = 0; // lectura adc
   int cntAdcC1 = 0; //cuentas adc
 
-  int gasC2 = 0;
+  canalEeprom canal2;
+//  byte gasC2 = 0;
   String nombreGasC2 = " ";  
-  int ranC2 = 0;
-  int rangoC2 = 0;
-  boolean loopC2 = false; // false = 4-20mA, true = 0-20mA
+//  byte ranC2 = 0;
+//  int rangoC2 = 0;
+//  boolean loopC2 = false; // false = 4-20mA, true = 0-20mA
   float adcC2 = 0; // lectura adc
   int cntAdcC2 = 0; //cuentas adc
 
-  int gasC3 = 0;
+  canalEeprom canal3;
+//  byte gasC3 = 0;
   String nombreGasC3 = " ";
-  int ranC3 = 0;
-  int rangoC3 = 0;
-  boolean loopC3 = false; // false = 4-20mA, true = 0-20mA
+//  byte ranC3 = 0;
+//  int rangoC3 = 0;
+//  boolean loopC3 = false; // false = 4-20mA, true = 0-20mA
   float adcC3 = 0; // lectura adc
   int cntAdcC3 = 0; //cuentas adc
 
 
-  int gasC4 = 0;
+  canalEeprom canal4;
+//  byte gasC4 = 0;
   String nombreGasC4 = " ";
-  int ranC4 = 0;
-  int rangoC4 = 0;
-  boolean loopC4 = false; // false = 4-20mA, true = 0-20mA
+//  byte ranC4 = 0;
+//  int rangoC4 = 0;
+//  boolean loopC4 = false; // false = 4-20mA, true = 0-20mA
   float adcC4 = 0; // lectura adc
   int cntAdcC4 = 0; //cuentas adc
   
@@ -202,56 +213,95 @@ Mapa de EEPROM:
   //analogReference(EXTERNAL); // Referencia ADC
   //analogReference(INTERNAL1V1); // Referencia ADC
   analogReference(INTERNAL2V56); // Referencia ADC
-
-    gasC1 = EEPROM.read(1);
-    Serial.println(gasC1);
+/*
+    canal1.gas = EEPROM.read(1);
+    Serial.println(canal1.gas);
     
-    ranC1 = EEPROM.read(2);
-    Serial.println(ranC1);
+    canal1.ran = EEPROM.read(2);
+    Serial.println(canal1.ran);
     
-    rangoC1 = EEPROM.read(3);
-    Serial.println(rangoC1);
+    canal1.rango = EEPROM.read(3);
+    Serial.println(canal1.rango);
+    canal1.rango = EEPROM.read(4);
+    Serial.println(canal1.rango);
     
-    loopC1 = EEPROM.read(4);
+    loopC1 = EEPROM.read(5);
     Serial.println(loopC1);
+    Serial.println("*******");
     
-    gasC2 = EEPROM.read(5);
-    Serial.println(gasC2);
+    canal2.gas = EEPROM.read(5);
+    Serial.println(canal2.gas);
     
-    ranC2 = EEPROM.read(6);
-    Serial.println(ranC2);
+    canal2.ran = EEPROM.read(6);
+    Serial.println(canal2.ran);
     
-    rangoC2 = EEPROM.read(7);
-    Serial.println(rangoC2);
+    canal2.rango = EEPROM.read(7);
+    Serial.println(canal2.rango);
+    canal2.rango = EEPROM.read(8);
+    Serial.println(canal2.rango);
     
-    loopC2 = EEPROM.read(8);
+    loopC2 = EEPROM.read(9);
     Serial.println(loopC2);
+    Serial.println("*******");
     
-    gasC3 = EEPROM.read(9);
-    Serial.println(gasC3);
+    canal3.gas = EEPROM.read(9);
+    Serial.println(canal3.gas);
     
-    ranC3 = EEPROM.read(10);
-    Serial.println(ranC3);
+    canal3.ran = EEPROM.read(10);
+    Serial.println(canal3.ran);
     
-    rangoC3 = EEPROM.read(11);
-    Serial.println(rangoC3);
+    canal3.rango = EEPROM.read(11);
+    Serial.println(canal3.rango);
+    canal3.rango = EEPROM.read(12);
+    Serial.println(canal3.rango);
     
-    loopC3 = EEPROM.read(12);
+    loopC3 = EEPROM.read(13);
     Serial.println(loopC3);
+    Serial.println("*******");
     
-    gasC4 = EEPROM.read(13);
-    Serial.println(gasC4);
+    canal4.gas = EEPROM.read(13);
+    Serial.println(canal4.gas);
     
-    ranC4 = EEPROM.read(14);
-    Serial.println(ranC4);
+    canal4.ran = EEPROM.read(14);
+    Serial.println(canal4.ran);
     
-    rangoC4 = EEPROM.read(15);
-    Serial.println(rangoC4);
+    canal4.rango = EEPROM.read(15);
+    Serial.println(canal4.rango);
+    canal4.rango = EEPROM.read(16);
+    Serial.println(canal4.rango);
     
-    loopC4 = EEPROM.read(16);
+    loopC4 = EEPROM.read(17);
     Serial.println(loopC4);
-    
+    Serial.println("*******");
+  */  
+    EEPROM_readAnything(1, canal1);
+    EEPROM_readAnything(6, canal2);
+    EEPROM_readAnything(11, canal3);
+    EEPROM_readAnything(16, canal4);
 
+    Serial.println(canal1.gas);
+    Serial.println(canal1.ran);
+    Serial.println(canal1.rango);
+    Serial.println(canal1.loop);
+    Serial.println("*******");
+    
+    Serial.println(canal2.gas);
+    Serial.println(canal2.ran);
+    Serial.println(canal2.rango);
+    Serial.println(canal2.loop);
+    Serial.println("*******");
+    
+    Serial.println(canal3.gas);
+    Serial.println(canal3.ran);
+    Serial.println(canal3.rango);
+    Serial.println(canal3.loop);
+    Serial.println("*******");
+    
+    Serial.println(canal4.gas);
+    Serial.println(canal4.ran);
+    Serial.println(canal4.rango);
+    Serial.println(canal4.loop);
+    Serial.println("*******");
 
     // LCD Begin
     lcd.init(); // initialize the lcd 
