@@ -595,6 +595,9 @@ Medicion:
 unsigned long g_timer_2 = 0;    // timer variable (global variable)
 void medicion(uint8_t param)
 {
+  digitalWrite(pinSensores,HIGH);// Activo rele para alimentar sensores
+
+  
   if(LCDML.FUNC_setup())          // ****** SETUP *********
   {
     // remmove compiler warnings when the param variable is not used:
@@ -609,377 +612,380 @@ void medicion(uint8_t param)
 
     
     if(LCDML.TIMER_ms(g_timer_2, 1000)) 
-    {
-    impresion();//imprimo por puerto serie info gral
-  //******************************************************************************
-//C1
-  adcRead = (analogRead(A3));
-  cntAdcC1 = adcRead;
-  if(canal1.loop == false)
-    {
-      //4-20mA
-      adcC1 = (canal1.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal1.rango/4;
-    }
-  else
-    {
-      //0-20mA
-      adcC1 = (adcRead * cteAdc) * canal1.rango / (.02 * 204.7);
-    }
-  if(adcC1 < 0)
-    adcC1 = 0;
-  
+		{
+		impresion();//imprimo por puerto serie info gral
+	  //******************************************************************************
+	//C1
+	  adcRead = (analogRead(A3));
+	  cntAdcC1 = adcRead;
+	  if(canal1.loop == false)
+		{
+		  //4-20mA
+		  adcC1 = (canal1.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal1.rango/4;
+		}
+	  else
+		{
+		  //0-20mA
+		  adcC1 = (adcRead * cteAdc) * canal1.rango / (.02 * 204.7);
+		}
+	  if(adcC1 < 0)
+		adcC1 = 0;
+	  
 
-//C2
-  adcRead = (analogRead(A2));
-  cntAdcC2 = adcRead;  
-  if(canal2.loop == false)
-    {
-      //4-20mA
-      adcC2 = (canal2.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal2.rango/4;
-    }
-  else
-    {
-      //0-20mA
-      adcC2 = (adcRead * cteAdc) * canal2.rango / (.02 * 204.7);
-    }
-  if(adcC2 < 0)
-    adcC2 = 0;
-//C3
-  adcRead = (analogRead(A1));
-  cntAdcC3 = adcRead;  
-  if(canal3.loop == false)
-    {
-      //4-20mA
-      adcC3 = (canal3.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal3.rango/4;
-    }
-  else
-    {
-      //0-20mA
-      adcC3 = (adcRead * cteAdc) * canal3.rango / (.02 * 204.7);
-    }
-  if(adcC3 < 0)
-    adcC3 = 0;
-//C4
-  
-  adcRead = (analogRead(A0));
-  cntAdcC4 = adcRead;
-  if(canal4.loop == false)
-    {
-      //4-20mA
-      adcC4 = (canal4.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal4.rango/4;
-    }
-  else
-    {
-      //0-20mA
-      adcC4 = (adcRead * cteAdc) * canal4.rango / (.02 * 204.7);
-    }
-  if(adcC4 < 0)
-    adcC4 = 0;
- 
-  //******************************************************************************
-      lcd.setCursor(0, 0); // set cursor
-      lcd.print(F("1          :     ppm")); // print change content
-      lcd.setCursor(2, 0); // set cursor
-      switch(canal1.gas)
-          {
-          case 0:
-              lcd.print("CO2"); // print change content 
-          break;
-          case 1:
-              lcd.print("SO2"); // print change content        
-          break;
-          case 2:
-              lcd.print("H2S"); // print change content        
-          break;
-          case 3:
-              lcd.print("---"); // print change content        
-          break;
-          default:
-              // do nothing
-          break;
-          }      
-      if(canal1.gas == 3)
-        {
-          lcd.setCursor(6, 0); // set cursor
-          lcd.print("[---]"); // print change content        
-          lcd.setCursor(12, 0); // set cursor
-          lcd.print("---- "); // print change content        
-        }
-      else
-        {
-        switch(canal1.ran)
-            {
-            case 0:
-                lcd.setCursor(8, 0); // set cursor
-                lcd.print("[5]"); // print change content
-            break;
+	//C2
+	  adcRead = (analogRead(A2));
+	  cntAdcC2 = adcRead;  
+	  if(canal2.loop == false)
+		{
+		  //4-20mA
+		  adcC2 = (canal2.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal2.rango/4;
+		}
+	  else
+		{
+		  //0-20mA
+		  adcC2 = (adcRead * cteAdc) * canal2.rango / (.02 * 204.7);
+		}
+	  if(adcC2 < 0)
+		adcC2 = 0;
+	//C3
+	  adcRead = (analogRead(A1));
+	  cntAdcC3 = adcRead;  
+	  if(canal3.loop == false)
+		{
+		  //4-20mA
+		  adcC3 = (canal3.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal3.rango/4;
+		}
+	  else
+		{
+		  //0-20mA
+		  adcC3 = (adcRead * cteAdc) * canal3.rango / (.02 * 204.7);
+		}
+	  if(adcC3 < 0)
+		adcC3 = 0;
+	//C4
+	  
+	  adcRead = (analogRead(A0));
+	  cntAdcC4 = adcRead;
+	  if(canal4.loop == false)
+		{
+		  //4-20mA
+		  adcC4 = (canal4.rango/(0.016 * 204.7) * (adcRead * cteAdc)) - canal4.rango/4;
+		}
+	  else
+		{
+		  //0-20mA
+		  adcC4 = (adcRead * cteAdc) * canal4.rango / (.02 * 204.7);
+		}
+	  if(adcC4 < 0)
+		adcC4 = 0;
+	 
+	  //******************************************************************************
+		  lcd.setCursor(0, 0); // set cursor
+		  lcd.print(F("1          :     ppm")); // print change content
+		  lcd.setCursor(2, 0); // set cursor
+		  switch(canal1.gas)
+			  {
+			  case 0:
+				  lcd.print("CO2"); // print change content 
+			  break;
+			  case 1:
+				  lcd.print("SO2"); // print change content        
+			  break;
+			  case 2:
+				  lcd.print("H2S"); // print change content        
+			  break;
+			  case 3:
+				  lcd.print("---"); // print change content        
+			  break;
+			  default:
+				  // do nothing
+			  break;
+			  }      
+		  if(canal1.gas == 3)
+			{
+			  lcd.setCursor(6, 0); // set cursor
+			  lcd.print("[---]"); // print change content        
+			  lcd.setCursor(12, 0); // set cursor
+			  lcd.print("---- "); // print change content        
+			}
+		  else
+			{
+			switch(canal1.ran)
+				{
+				case 0:
+					lcd.setCursor(8, 0); // set cursor
+					lcd.print("[5]"); // print change content
+				break;
 
-            case 1:
-                lcd.setCursor(7, 0); // set cursor
-                lcd.print("[50]"); // print change content        
-            break;
+				case 1:
+					lcd.setCursor(7, 0); // set cursor
+					lcd.print("[50]"); // print change content        
+				break;
 
-            case 2:
-                lcd.setCursor(6, 0); // set cursor
-                lcd.print("[200]"); // print change content        
-            break;
-            case 3:
-                lcd.setCursor(7, 0); // set cursor
-                lcd.print("[2k]"); // print change content        
-            break;
-            case 4:
-                lcd.setCursor(7, 0); // set cursor
-                lcd.print("[5k]"); // print change content        
-            break;
-            case 5:
-                lcd.setCursor(6, 0); // set cursor
-                lcd.print("[10k]"); // print change content        
-            break;
-            default:
-                // do nothing
-            break;
-            }
-        if(adcC1 < 1000)
-          {
-          lcd.setCursor(12, 0); // set cursor
-          lcd.print(adcC1,1); // print change content
-          }
-        else
-          {
-          lcd.setCursor(12, 0); // set cursor
-          lcd.print(adcC1,0); // print change content
-          }
-        }
-//
-      lcd.setCursor(0, 1); // set cursor
-      lcd.print(F("2          :     ppm")); // print change content
-      lcd.setCursor(2, 1); // set cursor
-      switch(canal2.gas)
-          {
-          case 0:
-              lcd.print("CO2"); // print change content        
-          break;
-          case 1:
-              lcd.print("SO2"); // print change content        
-          break;
-          case 2:
-              lcd.print("H2S"); // print change content        
-          break;
-          case 3:
-              lcd.print("---"); // print change content        
-          break;
-          default:
-              // do nothing
-          break;
-          }
-      if(canal2.gas == 3)
-        {
-          lcd.setCursor(6, 1); // set cursor
-          lcd.print("[---]"); // print change content        
-          lcd.setCursor(12, 1); // set cursor
-          lcd.print("---- "); // print change content        
-        }
-      else
-        {
-        switch(canal2.ran)
-            {
-            case 0:
-                lcd.setCursor(8, 1); // set cursor
-                lcd.print("[5]"); // print change content
-            break;
+				case 2:
+					lcd.setCursor(6, 0); // set cursor
+					lcd.print("[200]"); // print change content        
+				break;
+				case 3:
+					lcd.setCursor(7, 0); // set cursor
+					lcd.print("[2k]"); // print change content        
+				break;
+				case 4:
+					lcd.setCursor(7, 0); // set cursor
+					lcd.print("[5k]"); // print change content        
+				break;
+				case 5:
+					lcd.setCursor(6, 0); // set cursor
+					lcd.print("[10k]"); // print change content        
+				break;
+				default:
+					// do nothing
+				break;
+				}
+			if(adcC1 < 1000)
+			  {
+			  lcd.setCursor(12, 0); // set cursor
+			  lcd.print(adcC1,1); // print change content
+			  }
+			else
+			  {
+			  lcd.setCursor(12, 0); // set cursor
+			  lcd.print(adcC1,0); // print change content
+			  }
+			}
+	//
+		  lcd.setCursor(0, 1); // set cursor
+		  lcd.print(F("2          :     ppm")); // print change content
+		  lcd.setCursor(2, 1); // set cursor
+		  switch(canal2.gas)
+			  {
+			  case 0:
+				  lcd.print("CO2"); // print change content        
+			  break;
+			  case 1:
+				  lcd.print("SO2"); // print change content        
+			  break;
+			  case 2:
+				  lcd.print("H2S"); // print change content        
+			  break;
+			  case 3:
+				  lcd.print("---"); // print change content        
+			  break;
+			  default:
+				  // do nothing
+			  break;
+			  }
+		  if(canal2.gas == 3)
+			{
+			  lcd.setCursor(6, 1); // set cursor
+			  lcd.print("[---]"); // print change content        
+			  lcd.setCursor(12, 1); // set cursor
+			  lcd.print("---- "); // print change content        
+			}
+		  else
+			{
+			switch(canal2.ran)
+				{
+				case 0:
+					lcd.setCursor(8, 1); // set cursor
+					lcd.print("[5]"); // print change content
+				break;
 
-            case 1:
-                lcd.setCursor(7, 1); // set cursor
-                lcd.print("[50]"); // print change content        
-            break;
+				case 1:
+					lcd.setCursor(7, 1); // set cursor
+					lcd.print("[50]"); // print change content        
+				break;
 
-            case 2:
-                lcd.setCursor(6, 1); // set cursor
-                lcd.print("[200]"); // print change content        
-            break;
-            case 3:
-                lcd.setCursor(7, 1); // set cursor
-                lcd.print("[2k]"); // print change content        
-            break;
-            case 4:
-                lcd.setCursor(7, 1); // set cursor
-                lcd.print("[5k]"); // print change content        
-            break;
-            case 5:
-                lcd.setCursor(6, 1); // set cursor
-                lcd.print("[10k]"); // print change content        
-            break;
-            default:
-                // do nothing
-            break;
-            }      
-        if(adcC2 < 1000)
-          {
-          lcd.setCursor(12, 1); // set cursor
-          lcd.print(adcC2,1); // print change content
-          }
-        else
-          {
-          lcd.setCursor(12, 1); // set cursor
-          lcd.print(adcC2,0); // print change content
-          }
-        }
-//
-      lcd.setCursor(0, 2); // set cursor
-      lcd.print(F("3          :     ppm")); // print change content
-      lcd.setCursor(2, 2); // set cursor
-      switch(canal3.gas)
-          {
-          case 0:
-              lcd.print("CO2"); // print change content        
-          break;
+				case 2:
+					lcd.setCursor(6, 1); // set cursor
+					lcd.print("[200]"); // print change content        
+				break;
+				case 3:
+					lcd.setCursor(7, 1); // set cursor
+					lcd.print("[2k]"); // print change content        
+				break;
+				case 4:
+					lcd.setCursor(7, 1); // set cursor
+					lcd.print("[5k]"); // print change content        
+				break;
+				case 5:
+					lcd.setCursor(6, 1); // set cursor
+					lcd.print("[10k]"); // print change content        
+				break;
+				default:
+					// do nothing
+				break;
+				}      
+			if(adcC2 < 1000)
+			  {
+			  lcd.setCursor(12, 1); // set cursor
+			  lcd.print(adcC2,1); // print change content
+			  }
+			else
+			  {
+			  lcd.setCursor(12, 1); // set cursor
+			  lcd.print(adcC2,0); // print change content
+			  }
+			}
+	//
+		  lcd.setCursor(0, 2); // set cursor
+		  lcd.print(F("3          :     ppm")); // print change content
+		  lcd.setCursor(2, 2); // set cursor
+		  switch(canal3.gas)
+			  {
+			  case 0:
+				  lcd.print("CO2"); // print change content        
+			  break;
 
-          case 1:
-              lcd.print("SO2"); // print change content        
-          break;
+			  case 1:
+				  lcd.print("SO2"); // print change content        
+			  break;
 
-          case 2:
-              lcd.print("H2S"); // print change content        
-          break;
-          case 3:
-              lcd.print("---"); // print change content        
-          break;
-          default:
-              // do nothing
-          break;
-          }      
-      if(canal3.gas == 3)
-        {
-          lcd.setCursor(6, 2); // set cursor
-          lcd.print("[---]"); // print change content        
-          lcd.setCursor(12, 2); // set cursor
-          lcd.print("---- "); // print change content        
-        }
-      else
-        {
-        switch(canal3.ran)
-            {
-            case 0:
-                lcd.setCursor(8, 2); // set cursor
-                lcd.print("[5]"); // print change content
-            break;
+			  case 2:
+				  lcd.print("H2S"); // print change content        
+			  break;
+			  case 3:
+				  lcd.print("---"); // print change content        
+			  break;
+			  default:
+				  // do nothing
+			  break;
+			  }      
+		  if(canal3.gas == 3)
+			{
+			  lcd.setCursor(6, 2); // set cursor
+			  lcd.print("[---]"); // print change content        
+			  lcd.setCursor(12, 2); // set cursor
+			  lcd.print("---- "); // print change content        
+			}
+		  else
+			{
+			switch(canal3.ran)
+				{
+				case 0:
+					lcd.setCursor(8, 2); // set cursor
+					lcd.print("[5]"); // print change content
+				break;
 
-            case 1:
-                lcd.setCursor(7, 2); // set cursor
-                lcd.print("[50]"); // print change content        
-            break;
+				case 1:
+					lcd.setCursor(7, 2); // set cursor
+					lcd.print("[50]"); // print change content        
+				break;
 
-            case 2:
-                lcd.setCursor(6, 2); // set cursor
-                lcd.print("[200]"); // print change content        
-            break;
-            case 3:
-                lcd.setCursor(7, 2); // set cursor
-                lcd.print("[2k]"); // print change content        
-            break;
-            case 4:
-                lcd.setCursor(7, 2); // set cursor
-                lcd.print("[5k]"); // print change content        
-            break;
-            case 5:
-                lcd.setCursor(6, 2); // set cursor
-                lcd.print("[10k]"); // print change content        
-            break;
-            default:
-                // do nothing
-            break;
-            }
-        if(adcC3 < 1000)
-          {
-          lcd.setCursor(12, 2); // set cursor
-          lcd.print(adcC3,1); // print change content
-          }
-        else
-          {
-          lcd.setCursor(12, 2); // set cursor
-          lcd.print(adcC3,0); // print change content
-          }
-        }
-//
-      lcd.setCursor(0, 3); // set cursor
-      lcd.print(F("4          :     ppm")); // print change content
-      lcd.setCursor(2, 3); // set cursor
-      switch(canal4.gas)
-          {
-          case 0:
-              lcd.print("CO2"); // print change content        
-          break;
-          case 1:
-              lcd.print("SO2"); // print change content        
-          break;
-          case 2:
-              lcd.print("H2S"); // print change content        
-          break;
-          case 3:
-              lcd.print("---"); // print change content        
-          break;
-          default:
-              // do nothing
-          break;
-          }      
-      if(canal4.gas == 3)
-        {
-          lcd.setCursor(6, 3); // set cursor
-          lcd.print("[---]"); // print change content        
-          lcd.setCursor(12, 3); // set cursor
-          lcd.print("---- "); // print change content        
-        }
-      else
-        {
-        switch(canal4.ran)
-            {
-            case 0:
-                lcd.setCursor(8, 3); // set cursor
-                lcd.print("[5]"); // print change content
-            break;
+				case 2:
+					lcd.setCursor(6, 2); // set cursor
+					lcd.print("[200]"); // print change content        
+				break;
+				case 3:
+					lcd.setCursor(7, 2); // set cursor
+					lcd.print("[2k]"); // print change content        
+				break;
+				case 4:
+					lcd.setCursor(7, 2); // set cursor
+					lcd.print("[5k]"); // print change content        
+				break;
+				case 5:
+					lcd.setCursor(6, 2); // set cursor
+					lcd.print("[10k]"); // print change content        
+				break;
+				default:
+					// do nothing
+				break;
+				}
+			if(adcC3 < 1000)
+			  {
+			  lcd.setCursor(12, 2); // set cursor
+			  lcd.print(adcC3,1); // print change content
+			  }
+			else
+			  {
+			  lcd.setCursor(12, 2); // set cursor
+			  lcd.print(adcC3,0); // print change content
+			  }
+			}
+	//
+		  lcd.setCursor(0, 3); // set cursor
+		  lcd.print(F("4          :     ppm")); // print change content
+		  lcd.setCursor(2, 3); // set cursor
+		  switch(canal4.gas)
+			  {
+			  case 0:
+				  lcd.print("CO2"); // print change content        
+			  break;
+			  case 1:
+				  lcd.print("SO2"); // print change content        
+			  break;
+			  case 2:
+				  lcd.print("H2S"); // print change content        
+			  break;
+			  case 3:
+				  lcd.print("---"); // print change content        
+			  break;
+			  default:
+				  // do nothing
+			  break;
+			  }      
+		  if(canal4.gas == 3)
+			{
+			  lcd.setCursor(6, 3); // set cursor
+			  lcd.print("[---]"); // print change content        
+			  lcd.setCursor(12, 3); // set cursor
+			  lcd.print("---- "); // print change content        
+			}
+		  else
+			{
+			switch(canal4.ran)
+				{
+				case 0:
+					lcd.setCursor(8, 3); // set cursor
+					lcd.print("[5]"); // print change content
+				break;
 
-            case 1:
-                lcd.setCursor(7, 3); // set cursor
-                lcd.print("[50]"); // print change content        
-            break;
+				case 1:
+					lcd.setCursor(7, 3); // set cursor
+					lcd.print("[50]"); // print change content        
+				break;
 
-            case 2:
-                lcd.setCursor(6, 3); // set cursor
-                lcd.print("[200]"); // print change content        
-            break;
-            case 3:
-                lcd.setCursor(7, 3); // set cursor
-                lcd.print("[2k]"); // print change content        
-            break;
-            case 4:
-                lcd.setCursor(7, 3); // set cursor
-                lcd.print("[5k]"); // print change content        
-            break;
-            case 5:
-                lcd.setCursor(6, 3); // set cursor
-                lcd.print("[10k]"); // print change content        
-            break;
-            default:
-                // do nothing
-            break;
-            }      
-        if(adcC4 < 1000)
-          {
-          lcd.setCursor(12, 3); // set cursor
-          lcd.print(adcC4,1); // print change content
-          }
-        else
-          {
-          lcd.setCursor(12, 3); // set cursor
-          lcd.print(adcC4,0); // print change content
-          }
-        }
-  if(LCDML.FUNC_close())
-  {
-    // The screensaver go to the root menu
-    LCDML.MENU_goRoot();
-  }
-}
+				case 2:
+					lcd.setCursor(6, 3); // set cursor
+					lcd.print("[200]"); // print change content        
+				break;
+				case 3:
+					lcd.setCursor(7, 3); // set cursor
+					lcd.print("[2k]"); // print change content        
+				break;
+				case 4:
+					lcd.setCursor(7, 3); // set cursor
+					lcd.print("[5k]"); // print change content        
+				break;
+				case 5:
+					lcd.setCursor(6, 3); // set cursor
+					lcd.print("[10k]"); // print change content        
+				break;
+				default:
+					// do nothing
+				break;
+				}      
+			if(adcC4 < 1000)
+			  {
+			  lcd.setCursor(12, 3); // set cursor
+			  lcd.print(adcC4,1); // print change content
+			  }
+			else
+			  {
+			  lcd.setCursor(12, 3); // set cursor
+			  lcd.print(adcC4,0); // print change content
+			  }
+			}
+	}
+	  if(LCDML.FUNC_close())
+	  {
+		digitalWrite(pinSensores,LOW);// Desactivo rele para alimentar sensores
+		// The screensaver go to the root menu
+		LCDML.MENU_goRoot();
+
+	  }
+	
 }
 
 /*********************************************************************
@@ -1217,14 +1223,14 @@ void bienvenida()
   lcd.print("GaS BeNcH");
   Serial.println("GaS BeNcH");
   lcd.setCursor(5, 2); // set cursor
-  lcd.print("Ver: 0.12");
-  Serial.println("Ver: 0.12");
+  lcd.print("Ver: 0.13");
+  Serial.println("Ver: 0.13");
   lcd.setCursor(6, 3); // set cursor
   lcd.print("06/2022");
   Serial.println("06/2022");
-  
-  
-  delay(1500);
+  musiquita();
+//  delay(5000);
+ /* 
   lcd.clear();
   lcd.setCursor(3,0);
   lcd.print("Leyendo EEPROM");
@@ -1237,9 +1243,85 @@ void bienvenida()
       delay(110);
       
 			}
-  Serial.println();    
+  Serial.println();
+*/
 }
-  
+
+/*********************************************************************
+beep:
+*********************************************************************/
+void beep(int note, int duration)
+{
+tone(buzzerPin, note, duration);
+delay(duration);
+noTone(buzzerPin);
+delay(50);
+}
+
+/*********************************************************************
+musiquita:
+*********************************************************************/
+
+void musiquita()
+{
+	const int c = 261;
+	const int d = 294;
+	const int e = 329;
+	const int f = 349;
+	const int g = 391;
+	const int gS = 415;
+	const int a = 440;
+	const int aS = 455;
+	const int b = 466;
+	const int cH = 523;
+	const int cSH = 554;
+	const int dH = 587;
+	const int dSH = 622;
+	const int eH = 659;
+	const int fH = 698;
+	const int fSH = 740;
+	const int gH = 784;
+	const int gSH = 830;
+	const int aH = 880;
+
+  beep(a, 500);
+  beep(a, 500);    
+  beep(a, 500);
+  beep(f, 350);
+  beep(cH, 150);  
+  beep(a, 500);
+  beep(f, 350);
+  beep(cH, 150);
+  beep(a, 650);
+ /*
+  delay(500);
+ 
+  beep(eH, 500);
+  beep(eH, 500);
+  beep(eH, 500);  
+  beep(fH, 350);
+  beep(cH, 150);
+  beep(gS, 500);
+  beep(f, 350);
+  beep(cH, 150);
+  beep(a, 650);
+ 
+  delay(500);
+*/
+}
+
+/*********************************************************************
+controlBomba:
+*********************************************************************/
+void controlBomba()
+{
+ aux=digitalRead(pinSwBomba);//lee el estado del boton que acciona la bomba
+ if(aux == LOW)
+	digitalWrite(pinBomba,LOW);
+ else
+	digitalWrite(pinBomba,HIGH);
+} 
+
 // *********************************************************************
 void mFunc_screensaver(uint8_t param)
 // *********************************************************************
@@ -1290,6 +1372,7 @@ void mFunc_back(uint8_t param)
 
     // end function and go an layer back
     LCDML.FUNC_goBackToMenu(1);      // leave this function and go a layer back
+//	digitalWrite(pinSensores, LOW);
   }
 }
 

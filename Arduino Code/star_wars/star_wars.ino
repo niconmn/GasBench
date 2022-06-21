@@ -19,11 +19,11 @@ const int gH = 784;
 const int gSH = 830;
 const int aH = 880;
  
-const int buzzerPin = 9;
+const int buzzerPin = 34;
 const int ledPin1 = A4;
 const int ledPin2 = A5;
  
-int counter = 0;
+int counterBuzz = 0;
  
 void setup()
 {
@@ -75,9 +75,11 @@ void beep(int note, int duration)
 {
   //Play tone on buzzerPin
   tone(buzzerPin, note, duration);
+  delay(duration);
  
-  //Play different LED depending on value of 'counter'
-  if(counter % 2 == 0)
+  //Play different LED depending on value of 'counterBuzz'
+/*
+  if(counterBuzz % 2 == 0)
   {
     digitalWrite(ledPin1, HIGH);
     delay(duration);
@@ -88,14 +90,14 @@ void beep(int note, int duration)
     delay(duration);
     digitalWrite(ledPin2, LOW);
   }
- 
+ */
   //Stop tone on buzzerPin
   noTone(buzzerPin);
  
   delay(50);
  
-  //Increment counter
-  counter++;
+  //Increment counterBuzz
+//  counterBuzz++;
 }
  
 void firstSection()
@@ -109,7 +111,7 @@ void firstSection()
   beep(f, 350);
   beep(cH, 150);
   beep(a, 650);
- 
+ /*
   delay(500);
  
   beep(eH, 500);
@@ -123,8 +125,9 @@ void firstSection()
   beep(a, 650);
  
   delay(500);
+*/
 }
- 
+/* 
 void secondSection()
 {
   beep(aH, 500);
@@ -149,3 +152,4 @@ void secondSection()
  
   delay(350);
 }
+*/

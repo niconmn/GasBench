@@ -39,6 +39,7 @@
   #define _LCDML_DISP_cfg_cursor                     0x7E   // cursor Symbol
   #define _LCDML_DISP_cfg_scrollbar                  1      // enable a scrollbar
   int Aux1= 0;
+  int aux;
   // LCD object
   // liquid crystal needs (rs, rw, e, dat4, dat5, dat6, dat7)
   LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
@@ -50,6 +51,12 @@
   byte gasBak = 0;
   byte ranBak = 0;
   byte loopBak = false;
+
+  const int pinSensores = 33; // Salida para manejo de sensores
+  byte pinBomba = 12;
+  bool swBomba = false;
+  byte pinSwBomba = 45;
+
   
   float adcRead;
   float cteAdc = 4.096 / 1023;
@@ -192,10 +199,16 @@
   //analogReference(INTERNAL1V1); // Referencia ADC
 //  analogReference(INTERNAL2V56); // Referencia ADC
 
+	pinMode(pinBomba, OUTPUT);
+	digitalWrite(pinBomba,LOW);
+	pinMode(pinSwBomba, INPUT);
+	digitalWrite(pinSwBomba,HIGH);
+	pinMode(pinSensores, OUTPUT);
+	
     // LCD Begin
     lcd.init(); // initialize the lcd 
     lcd.backlight();
-    bienvenida(); 
+    bienvenida();
   
     EEPROM_readAnything(1, canal1);
     EEPROM_readAnything(6, canal2);
@@ -261,5 +274,6 @@
 // *********************************************************************
   void loop()
   {
-    LCDML.loop();   
+    LCDML.loop();
+	controlBomba();
   }
