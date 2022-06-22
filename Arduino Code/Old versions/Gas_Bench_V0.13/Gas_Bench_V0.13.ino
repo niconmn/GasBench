@@ -38,8 +38,8 @@
 
   #define _LCDML_DISP_cfg_cursor                     0x7E   // cursor Symbol
   #define _LCDML_DISP_cfg_scrollbar                  1      // enable a scrollbar
-  int Aux1= 0;
-  int aux;
+//  int Aux1= 0;
+//  int aux;
   // LCD object
   // liquid crystal needs (rs, rw, e, dat4, dat5, dat6, dat7)
   LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
@@ -59,6 +59,9 @@
   byte pinBomba = 12;
   bool swBomba = false;
   byte pinSwBomba = 45;
+
+  bool swLlaveNeumatica = false; // Banco = true (open), Bomba = false (close)
+  byte pinSwLlaveNeumatica = 44;
 
   
   float adcRead;
@@ -205,10 +208,15 @@
 //  analogReference(INTERNAL2V56); // Referencia ADC
 
 	pinMode(pinBomba, OUTPUT);
-	digitalWrite(pinBomba,LOW);
+	digitalWrite(pinBomba,HIGH);
+
 	pinMode(pinSwBomba, INPUT);
-	digitalWrite(pinSwBomba,HIGH);
+	digitalWrite(pinSwBomba,HIGH); // Activo pullup
+
 	pinMode(pinSensores, OUTPUT);
+	
+	pinMode(pinSwLlaveNeumatica, INPUT);
+	digitalWrite(pinSwLlaveNeumatica,HIGH); // Activo pullup
 	
     // LCD Begin
     lcd.init(); // initialize the lcd 
@@ -281,4 +289,6 @@
   {
     LCDML.loop();
 	controlBomba();
+//	swLlaveNeumatica = digitalRead(pinSwLlaveNeumatica);
+//	Serial.println(swLlaveNeumatica);
   }

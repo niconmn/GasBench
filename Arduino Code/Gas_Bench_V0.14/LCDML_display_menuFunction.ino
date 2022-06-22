@@ -1215,7 +1215,7 @@ bienvenida:
 *********************************************************************/
 void bienvenida()
 {
-  Aux1=0;
+//  Aux1=0;
   lcd.setCursor(4, 0); // set cursor
   lcd.print("CNEA / ICES");
   Serial.println("CNEA / ICES");
@@ -1229,7 +1229,6 @@ void bienvenida()
   lcd.print("06/2022");
   Serial.println("06/2022");
   musiquita();
-//  delay(5000);
  /* 
   lcd.clear();
   lcd.setCursor(3,0);
@@ -1293,7 +1292,7 @@ void musiquita()
   beep(f, 350);
   beep(cH, 150);
   beep(a, 650);
- /*
+/*
   delay(500);
  
   beep(eH, 500);
@@ -1315,8 +1314,10 @@ controlBomba:
 *********************************************************************/
 void controlBomba()
 {
- aux=digitalRead(pinSwBomba);//lee el estado del boton que acciona la bomba
- if(aux == LOW)
+ swBomba = digitalRead(pinSwBomba);//lee el estado del boton que acciona la bomba
+ swLlaveNeumatica = digitalRead(pinSwLlaveNeumatica);//lee el estado del boton que acciona la bomba
+ 
+ if(swBomba == LOW && swLlaveNeumatica == LOW)
 	digitalWrite(pinBomba,LOW);
  else
 	digitalWrite(pinBomba,HIGH);
